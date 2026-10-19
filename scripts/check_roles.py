@@ -72,6 +72,13 @@ def main() -> int:
         return 1
 
     failures: list[str] = []
+
+    wildcard_at = next((i for i, rule in enumerate(rules) if rule["match"] == "*"), None)
+    if wildcard_at is not None and wildcard_at < len(rules) - 1:
+        failures.append(
+            f"catch-all rule at position {wildcard_at + 1} precedes {len(rules) - wildcard_at - 1} "
+            "specific rule(s): with first-match-wins they never run"
+        )
     for hint in WRITE_HINTS:
         probe = f"connector.{hint}thing"
         action = action_for(probe, rules)
