@@ -48,13 +48,16 @@ change to what an employee may do is a diff someone reviews — and reverts the 
 policy:
   default_mode: risk
 policies:
-  - match: "*"
-    action: block
   - match: "*.read_*"
     action: always_run
   - match: "*.send_*"
     action: require_approval
+  - match: "*"
+    action: block
 ```
+
+Specific rules go above the catch-all: with first-match-wins, a `*` rule at the top would
+swallow every call.
 
 `default_mode: risk` is the safe default: a connector call that no rule matches is not run
 unattended. Read the policy reference in [docs/02-approval-policy.md](docs/02-approval-policy.md).
