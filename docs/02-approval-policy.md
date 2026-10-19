@@ -7,12 +7,12 @@ The `policy` and `policies` keys decide what a connector call may do. The refere
 policy:
   default_mode: risk
 policies:
-  - match: "*"
-    action: block
   - match: "*.read_*"
     action: always_run
   - match: "*.send_*"
     action: require_approval
+  - match: "*"
+    action: block
 ```
 
 - `default_mode` is `allow_all` or `risk`. With `risk`, a call no rule matches is not run
@@ -26,10 +26,11 @@ policies:
 
 The first matching rule wins, so the specific rules go above the catch-all. In this repo:
 
-1. `*` → `block` is the fallback.
-2. `*.read_*` and `*.list_*` → `always_run`.
-3. `*.send_*`, `*.create_contact`, `*.update_deal` → `require_approval`.
-4. `*.delete_*` → `block`.
+1. `*.read_*` and `*.list_*` → `always_run`.
+2. `*.send_*`, `*.create_contact`, `*.update_deal` → `require_approval`.
+3. `*.delete_*` → `block`.
+4. `*` → `block` is the fallback, and it goes **last**. A `*` rule above the others matches
+   everything first and silently disables every rule below it.
 
 ## Reviewing a change
 
