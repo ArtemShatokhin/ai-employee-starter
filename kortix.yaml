@@ -35,8 +35,6 @@ policy:
   default_mode: risk
 
 policies:
-  - match: "*"
-    action: block
   - match: "*.read_*"
     action: always_run
   - match: "*.list_*"
@@ -48,6 +46,8 @@ policies:
   - match: "*.update_deal"
     action: require_approval
   - match: "*.delete_*"
+    action: block
+  - match: "*"
     action: block
 
 triggers:
