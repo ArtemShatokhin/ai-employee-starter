@@ -5,7 +5,9 @@ Open source. An AI employee you can deploy from a repo: three roles, each with a
 
 This starter is meant to be forked. It runs on [Kortix](https://kortix.com), the open-source AI
 Operating System, and it is the code behind
-[opensourceaiemployee.com](https://opensourceaiemployee.com).
+[opensourceaiemployee.com](https://opensourceaiemployee.com). A step-by-step walkthrough of the hire
+itself, from the role file to the first approval, is at
+[how to hire an open-source AI employee](https://opensourceaiemployee.com/hire-an-ai-employee).
 
 ## What is in here
 
@@ -42,7 +44,7 @@ kortix ship                              # push the project to your Kortix accou
 ## Where the rules live
 
 The role is a markdown file in `agents/`. The permissions are in `kortix.yaml`. Both are in git, so a
-change to what an employee may do is a diff someone reviews — and reverts the same way.
+change to what an employee may do is a diff someone reviews, and reverts the same way.
 
 ```yaml
 policy:
