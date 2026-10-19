@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://kortix.com/schema/kortix.v2.schema.json
+kortix_version: 2
+default_agent: support-triage
+
+project:
+  name: ai-employee-starter
+  description: Three governed AI employee roles on Kortix, with approval policies in the repo.
+
+connectors:
+  - slug: gmail
+  - slug: hubspot
+  - slug: slack
+  - slug: http
+    type: openapi
+    url: https://api.example.com/openapi.json
+
+agents:
+  support-triage:
+    file: agents/support-triage.md
+    connectors:
+      - gmail
+      - slack
+  sales-ops:
+    file: agents/sales-ops.md
+    connectors:
+      - gmail
+      - hubspot
+  research-brief:
+    file: agents/research-brief.md
+    connectors:
+      - http
+      - slack
+
+policy:
+  default_mode: risk
+
+policies:
+  - match: "*"
+    action: block
+  - match: "*.read_*"
+    action: always_run
+  - match: "*.list_*"
+    action: always_run
+  - match: "*.send_*"
+    action: require_approval
+  - match: "*.create_contact"
+    action: require_approval
+  - match: "*.update_deal"
+    action: require_approval
+  - match: "*.delete_*"
+    action: block
+
+triggers:
+  - slug: support-morning
+    type: cron
+    agent: support-triage
+    cron: "0 8 * * 1-5"
+    prompt: Triage the overnight queue and draft replies for everything that is not a refund.
+  - slug: research-monday
+    type: cron
+    agent: research-brief
+    cron: "0 7 * * 1"
+    prompt: Write the Monday brief from this week's sources and link every claim.
